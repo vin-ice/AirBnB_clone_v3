@@ -23,11 +23,15 @@ class User(BaseModel, Base):
         first_name = ""
         last_name = ""
 
+    def __init__(self, *args, **kwargs):
+        """Calls the parent class with initializer"""
+        super().__init__(*args, **kwargs)
+
     @property
     def password(self):
         return self._password
 
-    @property.setter
+    @password.setter
     def password(self, value):
         self._password = self.encrypt_password(value)
 
@@ -36,7 +40,3 @@ class User(BaseModel, Base):
         _pwd = pwd.encode("utf-8")
         _pwd = hashlib.md5().update(_pwd).hexdigest()
         return _pwd
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-            
