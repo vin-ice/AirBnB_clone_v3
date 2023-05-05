@@ -16,12 +16,13 @@ def get_place_amenities(place_id):
             amenities = place.amenities
         else:
             amenities = place.amenities()
-        return make_response(jsonify(amenities), 200)
-    abort(404)
+        return jsonify(amenities)
+    else:
+        abort(404)
 
 
-@app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=["DELETE"],
-                 strict_slashes=False)
+@app_views.route("/places/<place_id>/amenities/<amenity_id>",
+                 methods=["DELETE"], strict_slashes=False)
 def delete_place_amenity(place_id, amenity_id):
     """DELETEs an amenity object"""
     place = storage.get("Place", id=place_id)
@@ -35,10 +36,13 @@ def delete_place_amenity(place_id, amenity_id):
             if amenity:
                 del amenities[amenity]
                 place.save()
-                return make_response(jsonify({}), 201)
+                return jsonify({})
+            else:
+                abort(404)
+        else:
             abort(404)
+    else:
         abort(404)
-    abort(404)
 
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=["POST"],
@@ -58,5 +62,7 @@ def add_amenity_to_place(place_id, amenity_id):
                 place.save()
                 return make_response(jsonify(amenity.to_dict()), 201)
             return make_response(jsonify(amenity.to_dict()), 200)
-        abort(400, "Not a JSON")
-    abort(404)
+        else:
+            abort(400, "Not a JSON")
+    else:
+        abort(404)

@@ -13,8 +13,10 @@ def get_city_places(city_id):
     city = storage.get("City", city_id)
     if city:
         places = [place.to_dict() for place in city.places]
-        return make_response(jsonify(places), 200)  
-    abort(404)
+        return jsonify(places)
+    else:
+        abort(404)
+
 
 @app_views.route("/places/<string:place_id>", methods=["GET"],
                  strict_slashes=False)
@@ -26,8 +28,9 @@ def get_place(place_id):
     """
     place = storage.get("Place", id=place_id)
     if place:
-        return make_response(jsonify(place.to_dict()), 200)
-    abort(404)
+        return jsonify(place.to_dict())
+    else:
+        abort(404)
 
 
 @app_views.route("/places/<place_id>", methods=["DELETE"],
@@ -41,12 +44,14 @@ def delete_place(place_id):
     place = storage.get("Place", place_id)
     if place:
         place.delete()
-        storage.save()    
-        return make_response(jsonify({}), 200)
-    abort(404)
+        storage.save()
+        return jsonify({})
+    else:
+        abort(404)
 
 
-@app_views.route("/cities/<city_id>/places", methods=["POST"], strict_slashes=False)
+@app_views.route("/cities/<city_id>/places", methods=["POST"],
+                 strict_slashes=False)
 def add_city_place(city_id):
     """Adds a new city place"""
     city = storage.get("City", id=city_id)
@@ -67,7 +72,8 @@ def add_city_place(city_id):
                 return make_response(jsonify(place.to_dict()), 201)
         else:
             abort(400, "Not a JSON")
-    abort(404)
+    else:
+        abort(404)
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
@@ -86,7 +92,7 @@ def update_place(place_id):
                     setattr(place, k, v)
 
             place.save()
-            return make_response(jsonify(place.to_dict()), 200)
+            return jsonify(place.to_dict())
         else:
             abort(400, "Not a JSON")
     else:
@@ -122,5 +128,6 @@ def get_x_places():
                     places = filter(lambda p: aid in p.amenities, _places)       
         else:
             places = [p.to_dict() for p in storage.all("Place")]
-        return make_response(jsonify(places))
-    abort(400, "Not a JSON")
+        return jsonify(places)
+    else:
+        abort(400, "Not a JSON")

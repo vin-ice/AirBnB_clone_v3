@@ -13,8 +13,9 @@ def get_state_cities(state_id):
     state = storage.get("State", state_id)
     if state:
         cities = [city.to_dict() for city in state.cities]
-        return make_response(jsonify(cities), 200)
-    abort(404)
+        return jsonify(cities)
+    else:
+        abort(404)
 
 
 @app_views.route("/cities/<city_id>", methods=["GET"],
@@ -23,7 +24,7 @@ def get_city(city_id):
     """"GET city"""
     city = storage.get("City", id=city_id)
     if city:
-        return make_response(jsonify(city.to_dict()), 200)
+        return jsonify(city.to_dict())
     else:
         abort(404)
 
@@ -36,7 +37,7 @@ def delete_city(city_id):
     if city:
         city.delete()
         storage.save()
-        return make_response(jsonify({}), 201)
+        return jsonify({})
     abort(404)
 
 
@@ -54,9 +55,12 @@ def add_state_city(state_id):
                 city = City(**req)
                 city.save()
                 return make_response(jsonify(city.to_dict()), 201)
-            abort(400, "Missing name")
-        abort(400, "Not a JSON")
-    abort(404)
+            else:
+                abort(400, "Missing name")
+        else:
+            abort(400, "Not a JSON")
+    else:
+        abort(404)
 
 
 @app_views.route("/cities/<city_id>", methods=["PUT"], strict_slashes=False)
@@ -71,5 +75,7 @@ def update_city(city_id):
                     setattr(city, k, v)
             city.save()
             return make_response(jsonify(city.to_dict()), 200)
-        abort(400, "Not a JSON")
-    abort(404)
+        else:
+            abort(400, "Not a JSON")
+    else:
+        abort(404)

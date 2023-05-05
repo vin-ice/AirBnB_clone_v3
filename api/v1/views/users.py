@@ -10,7 +10,7 @@ from flask import jsonify, make_response, abort, request
 def get_users():
     """Retrieves all user objects"""
     users = [user.to_dict() for user in storage.all("User").values()]
-    return make_response(jsonify(users), 200)
+    return jsonify(users)
 
 
 @app_views.route("/users/<string:user_id>", methods=["GET"],
@@ -24,7 +24,7 @@ def get_user(user_id):
     user = storage.get("User", id=user_id)
     if user is None:
         abort(404)
-    return make_response(jsonify(user.to_dict()), 200)
+    return jsonify(user.to_dict())
 
 
 @app_views.route("/users/<user_id>", methods=["DELETE"],
@@ -38,9 +38,10 @@ def delete_user(user_id):
     user = storage.get("User", user_id)
     if user:
         user.delete()
-        storage.save()    
-        return make_response(jsonify({}), 200)
-    abort(404)
+        storage.save()
+        return jsonify({})
+    else:
+        abort(404)
 
 
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
@@ -56,7 +57,8 @@ def add_user():
             user = User(**req)
             user.save()
             return make_response(jsonify(user.to_dict()), 201)
-    abort(400, "Not a JSON")
+    else:
+        abort(400, "Not a JSON")
 
 
 @app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
@@ -75,7 +77,7 @@ def update_user(user_id):
                     setattr(user, k, v)
 
             user.save()
-            return make_response(jsonify(user.to_dict()), 200)
+            return jsonify(user.to_dict())
         else:
             abort(400, "Not a JSON")
     else:

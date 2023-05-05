@@ -10,7 +10,7 @@ from flask import jsonify, make_response, abort, request
 def get_states():
     """Retrieves all state objects"""
     states = [state.to_dict() for state in storage.all("State").values()]
-    return make_response(jsonify(states), 200)
+    return jsonify(states)
 
 
 @app_views.route("/states/<string:state_id>", methods=["GET"],
@@ -24,7 +24,7 @@ def get_state(state_id):
     state = storage.get("State", id=state_id)
     if state is None:
         abort(404)
-    return make_response(jsonify(state.to_dict()), 200)
+    return jsonify(state.to_dict())
 
 
 @app_views.route("/states/<state_id>", methods=["DELETE"],
@@ -38,9 +38,10 @@ def delete_state(state_id):
     state = storage.get("State", state_id)
     if state:
         state.delete()
-        storage.save()    
+        storage.save()
         return make_response(jsonify({}), 200)
-    abort(404)
+    else:
+        abort(404)
 
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
@@ -52,8 +53,10 @@ def add_state():
             state = State(**req)
             state.save()
             return make_response(jsonify(state.to_dict()), 201)
-        abort(400, "Missing name")
-    abort(400, "Not a JSON")
+        else:
+            abort(400, "Missing name")
+    else:
+        abort(400, "Not a JSON")
 
 
 @app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
@@ -70,7 +73,6 @@ def update_state(state_id):
             for k, v in req.items():
                 if k not in ["id", "created_at", "updated_at"]:
                     setattr(state, k, v)
-
             state.save()
             return make_response(jsonify(state.to_dict()), 200)
         else:

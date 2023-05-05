@@ -42,9 +42,9 @@ class FileStorage:
         if cls and cls in classes.values():
             cls = classes[cls]
             count = len(list(filter(lambda ele: ele.__class__ == cls,
-                                    self.__objects.values())))
+                                    self.all().values())))
         elif cls is None:
-            count = len(self.__objects)
+            count = len(self.all())
         return (count)
 
     def get(self, cls, id):
@@ -58,8 +58,9 @@ class FileStorage:
         if cls and cls in classes:
             cls = classes[cls]
             key = "{}.{}".format(cls, id)
-            if key in self.__objects.keys():
-                instance = self.__objects[key]
+            objs = self.all()
+            if key in objs.keys():
+                instance = objs[key]
         return (instance)
 
     def new(self, obj):

@@ -14,8 +14,9 @@ def get_place_reviews(place_id):
     place = storage.get("Place", place_id)
     if place:
         reviews = [review.to_dict() for review in place.reviews]
-        return make_response(jsonify(reviews), 200)
-    abort(404)
+        return jsonify(reviews)
+    else:
+        abort(404)
 
 
 @app_views.route("/reviews/<review_id>", methods=["GET"],
@@ -24,7 +25,7 @@ def get_review(review_id):
     """"GET review"""
     review = storage.get("Review", id=review_id)
     if review:
-        return make_response(jsonify(review.to_dict()), 200)
+        return jsonify(review.to_dict())
     else:
         abort(404)
 
@@ -37,7 +38,7 @@ def delete_review(review_id):
     if review:
         review.delete()
         storage.save()
-        return make_response(jsonify({}), 201)
+        return jsonify({})
     abort(404)
 
 
@@ -71,9 +72,11 @@ def update_review(review_id):
         if request.is_json:
             req = request.get_json()
             for k, v in req.items():
-                if k not in ["id", "user_id","created_at", "updated_at"]:
+                if k not in ["id", "user_id", "created_at", "updated_at"]:
                     setattr(review, k, v)
             review.save()
             return make_response(jsonify(review.to_dict()), 200)
-        abort(400, "Not a JSON")
-    abort(404)
+        else:
+            abort(400, "Not a JSON")
+    else:
+        abort(404)
