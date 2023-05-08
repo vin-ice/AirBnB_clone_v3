@@ -37,6 +37,5 @@ class User(BaseModel, Base):
 
     def encrypt_password(self, pwd):
         """Encrypts password"""
-        _pwd = pwd.encode("utf-8")
-        _pwd = hashlib.md5().update(_pwd).hexdigest()
+        _pwd = hashlib.md5(pwd.encode("utf-8")).hexdigest()
         return _pwd

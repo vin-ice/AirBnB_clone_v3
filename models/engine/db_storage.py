@@ -55,13 +55,11 @@ class DBStorage:
         Count the number of objects in storage matching the class
         """
         count = 0
-        if cls and cls in classes.values():
-            cls = classes[cls]
-            count = self.__session.query(cls).count()
+        if cls:
+            count = len(self.all(cls).values())
         else:
             for cls in classes.values():
-                count += self.__session.query(cls).count()
-
+                count += len(self.all(cls).values())
         return (count)
 
     def get(self, cls, id):
@@ -72,9 +70,10 @@ class DBStorage:
             id (str): object's id
         """
         instance = None
-        if cls and cls in classes.values():
-            cls = classes[cls]
-            instance = self.__session.query(cls).where(cls.id == id).first()
+        if cls:
+            for v in self.all(cls).values():
+                if v.id == id:
+                    instance = v
         return (instance)
 
     def new(self, obj):

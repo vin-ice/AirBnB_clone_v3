@@ -43,9 +43,9 @@ def delete_place(place_id):
     """
     place = storage.get("Place", place_id)
     if place:
-        place.delete()
+        storage.delete(place)
         storage.save()
-        return jsonify({})
+        return make_response(jsonify({}), 200)
     else:
         abort(404)
 
@@ -66,8 +66,8 @@ def add_city_place(city_id):
                 if "name" not in req:
                     abort(400, "Missing name")
                 # req["city_id"] = city_id
-                setattr(req, "city_id", city_id)
                 place = Place(**req)
+                setattr(req, "city_id", city_id)
                 place.save()
                 return make_response(jsonify(place.to_dict()), 201)
         else:

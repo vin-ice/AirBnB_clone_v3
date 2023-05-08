@@ -9,7 +9,7 @@ from flask import jsonify, make_response, abort, request
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
 def get_amenities():
     """GETs all amemities"""
-    amenities = [amenity for amenity in storage.all("Amenity").values()]
+    amenities = [amenity.to_dict() for amenity in storage.all("Amenity").values()]
     return make_response(jsonify(amenities), 200)
 
 
@@ -19,17 +19,17 @@ def get_amenity(amenity_id):
     """GETs amenity"""
     amenity = storage.get("Amenity", amenity_id)
     if amenity:
-        return make_response(jsonify(amenity), 200)
+        return make_response(jsonify(amenity.to_dict()), 200)
     abort(404)
 
 
-@app_views.route("/amenities/<amenity_id>", methods=["GET"],
+@app_views.route("/amenities/<amenity_id>", methods=["DELETE"],
                  strict_slashes=False)
 def delete_amenity(amenity_id):
     """DELETEs amenity"""
     amenity = storage.get("Amenity", amenity_id)
     if amenity:
-        amenity.delete()
+        storage.delete(amenity)
         storage.save()
         return make_response(jsonify({}), 200)
     abort(404)
@@ -61,6 +61,6 @@ def update_amenity(amenity_id):
                 if k not in ["id", "created_at", "updated_at"]:
                     setattr(amenity, k, v)
                 amenity.save()
-                return make_response(jsonify(amenity.to_dict), 200)
+                return make_response(jsonify(amenity.to_dict()), 200)
         abort(400, "Not a JSON")
     abort(404)

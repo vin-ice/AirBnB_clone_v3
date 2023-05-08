@@ -52,9 +52,8 @@ def add_place_review(place_id):
             req = request.get_json()
             user = storage.get("User", req.get("user_id", None))
             if user:
-                # req["place_id"] = place_id
-                set(req, "place_id", place_id)
                 review = Review(**req)
+                setattr(req, "place_id", place_id)
                 review.save()
                 return make_response(jsonify(review.to_dict()), 201)
             else:

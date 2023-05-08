@@ -40,9 +40,7 @@ class FileStorage:
         """
         count = 0
         if cls and cls in classes.values():
-            cls = classes[cls]
-            count = len(list(filter(lambda ele: ele.__class__ == cls,
-                                    self.all().values())))
+            count = len(self.all(cls))
         elif cls is None:
             count = len(self.all())
         return (count)
@@ -55,12 +53,12 @@ class FileStorage:
             id (str): object's id
         """
         instance = None
-        if cls and cls in classes:
-            cls = classes[cls]
-            key = "{}.{}".format(cls, id)
-            objs = self.all()
-            if key in objs.keys():
-                instance = objs[key]
+        if cls and cls in classes.values():
+            objs = self.all(cls)
+            for v in objs.values():
+                if v.id == id:
+                    instance = v
+                    break
         return (instance)
 
     def new(self, obj):
@@ -75,7 +73,7 @@ class FileStorage:
         for key in self.__objects:
             json_objects[key] = self.__objects[key].to_dict()
         with open(self.__file_path, 'w') as f:
-            json.dump(json_objects, f)
+            json.dump(json_objects, f, indent=2)
 
     def reload(self):
         """deserializes the JSON file to __objects"""

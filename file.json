@@ -1,1 +1,21 @@
-{"Amenity.0d714873-bd84-4b69-b809-62a1d6c3419b": {"id": "0d714873-bd84-4b69-b809-62a1d6c3419b", "created_at": "2023-05-02T10:52:16.001797", "updated_at": "2023-05-02T10:52:16.001797", "__class__": "Amenity"}, "BaseModel.3982d119-c2f1-416d-b37d-abe91025c2a4": {"id": "3982d119-c2f1-416d-b37d-abe91025c2a4", "created_at": "2023-05-02T10:52:16.001814", "updated_at": "2023-05-02T10:52:16.001814", "__class__": "BaseModel"}, "City.83eef282-529f-48a7-8465-f53d114d975c": {"id": "83eef282-529f-48a7-8465-f53d114d975c", "created_at": "2023-05-02T10:52:16.001829", "updated_at": "2023-05-02T10:52:16.001829", "__class__": "City"}, "Place.72ee13d7-b42a-4289-b2e2-72328dbe9e1e": {"id": "72ee13d7-b42a-4289-b2e2-72328dbe9e1e", "created_at": "2023-05-02T10:52:16.001845", "updated_at": "2023-05-02T10:52:16.001845", "__class__": "Place"}, "Review.0077bb55-d8ca-4760-abb0-373fe1c24589": {"id": "0077bb55-d8ca-4760-abb0-373fe1c24589", "created_at": "2023-05-02T10:52:16.001860", "updated_at": "2023-05-02T10:52:16.001860", "__class__": "Review"}, "State.9e34db08-e90c-4a51-8fc2-4c4900567535": {"id": "9e34db08-e90c-4a51-8fc2-4c4900567535", "created_at": "2023-05-02T10:52:16.001874", "updated_at": "2023-05-02T10:52:16.001874", "__class__": "State"}, "User.abbe5569-6980-49f4-af28-9258092c7e99": {"id": "abbe5569-6980-49f4-af28-9258092c7e99", "created_at": "2023-05-02T10:52:16.001888", "updated_at": "2023-05-02T10:52:16.001888", "__class__": "User"}}
+{
+  "User.298ede22-2bbb-41d7-83b3-180c2fd02b34": {
+    "id": "298ede22-2bbb-41d7-83b3-180c2fd02b34",
+    "created_at": "2023-05-06T18:40:11.990814",
+    "updated_at": "2023-05-06T18:40:11.990845",
+    "first_name": "Betty",
+    "last_name": "Bar",
+    "email": "airbnb@mail.com",
+    "__class__": "User",
+    "password": "63a9f0ea7bb98050796b649e85481845"
+  },
+  "User.5214cb06-eb57-4716-8eb5-88d9681238f6": {
+    "id": "5214cb06-eb57-4716-8eb5-88d9681238f6",
+    "created_at": "2023-05-06T18:40:11.991157",
+    "updated_at": "2023-05-06T18:40:11.991176",
+    "first_name": "John",
+    "email": "airbnb2@mail.com",
+    "__class__": "User",
+    "password": "63a9f0ea7bb98050796b649e85481845"
+  }
+}

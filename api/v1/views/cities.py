@@ -50,9 +50,8 @@ def add_state_city(state_id):
         if request.is_json:
             req = request.get_json()
             if "name" in req:
-                # req["state_id"] = state_id
-                setattr(req, "state_id", state_id)
                 city = City(**req)
+                setattr(city, "state_id", state_id) 
                 city.save()
                 return make_response(jsonify(city.to_dict()), 201)
             else:

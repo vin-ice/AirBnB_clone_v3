@@ -10,7 +10,7 @@ from flask import jsonify, make_response, abort, request
 def get_states():
     """Retrieves all state objects"""
     states = [state.to_dict() for state in storage.all("State").values()]
-    return jsonify(states)
+    return make_response(jsonify(states))
 
 
 @app_views.route("/states/<string:state_id>", methods=["GET"],

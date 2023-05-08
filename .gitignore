@@ -1,5 +1,6 @@
 test_get_count.py
 venv/*
+/test*.py
 tests/test_api
 .cache*
 .android/*
