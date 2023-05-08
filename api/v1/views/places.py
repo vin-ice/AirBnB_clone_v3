@@ -125,7 +125,7 @@ def get_x_places():
                 else:
                     _places = storage.all("Place")
                 for aid in req.get("amenities", []):
-                    places = filter(lambda p: aid in p.amenities, _places)       
+                    places = filter(lambda p: aid in p.amenities, _places)
         else:
             places = [p.to_dict() for p in storage.all("Place")]
         return jsonify(places)

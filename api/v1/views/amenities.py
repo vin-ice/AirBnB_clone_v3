@@ -9,7 +9,8 @@ from flask import jsonify, make_response, abort, request
 @app_views.route("/amenities", methods=["GET"], strict_slashes=False)
 def get_amenities():
     """GETs all amemities"""
-    amenities = [amenity.to_dict() for amenity in storage.all("Amenity").values()]
+    amenities = [amenity.to_dict() for amenity in
+                 storage.all("Amenity").values()]
     return make_response(jsonify(amenities), 200)
 
 
